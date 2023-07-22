@@ -18,7 +18,7 @@ int main(void)
 	buff = malloc(sizeof(char *) * 1024);
 	if (buff == NULL)
 		return (0);
-	printf("$ ");
+	_puts("$ ");
 	getline(&buff, &len, stdin);
 
 	ptr = strtok(buff, "\n");
