@@ -11,6 +11,9 @@ int _len(char *str);
 int _putchar(char c);
 int _puts(char *str);
 char *_uitoa(unsigned int count);
+int match_char(char c, const char *str);
+char *_strtok(char *str, const char *delim);
+char *tokenize(char *str, const char *delim);
 
 
 #endif /* _SHEL_H_ */

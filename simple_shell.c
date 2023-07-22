@@ -21,7 +21,7 @@ int main(void)
 	_puts("$ ");
 	getline(&buff, &len, stdin);
 
-	ptr = strtok(buff, "\n");
+	ptr = _strtok(buff, "\n" " ");
 	pid = fork();
 	if (pid == 0)
 	{
