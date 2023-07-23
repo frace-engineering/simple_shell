@@ -22,10 +22,13 @@ int main(void)
 	is_pipe = isatty(STDIN_FILENO) ? 0 : 1;
 
 	if(!is_pipe)
-		printf("$ ");
+		_puts("$ ");
 
 	getline(&buff, &len, stdin);
 	ptr = strtok(buff, "\n");
+
+	/** ptr = _strtok(buff, "\n" " "); */
+
 	pid = fork();
 	if (pid == 0)
 	{
