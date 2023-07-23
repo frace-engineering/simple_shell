@@ -6,13 +6,14 @@
  *
  * Return: self
  */
-int main(void)
+int main(int argc __attribute__((unused)), char **argv, char **env)
 {
 	size_t len;
 	char *buff, *ptr;
 	int is_pipe;
 	pid_t pid;
-	char *argv[] = {"", NULL};
+	int wstatus;
+	/** char *argv[] = {"", NULL}; */
 
 	len = 1024;
 	buff = malloc(sizeof(char *) * 1024);
@@ -24,24 +25,37 @@ int main(void)
 	if(!is_pipe)
 		_puts("$ ");
 
-	getline(&buff, &len, stdin);
-	ptr = strtok(buff, "\n");
+	while (getline(&buff, &len, stdin) != -1)
+	{
+		ptr = strtok(buff, "\n ");
+
+		pid = fork();
+		if(pid == 0)
+		{
+			if (execve(ptr, argv, env) == -1)
+			{
+				if (is_pipe)
+					exit (127);
+				else
+				{
+					perror("execve");
+				}
+			}
+		}
+		else
+		{
+			wait(&wstatus);
+		}
+		if (is_pipe == 0)
+			_puts("$ ");
+	}
+			
 
 	/** ptr = _strtok(buff, "\n" " "); */
 
-	pid = fork();
-	if (pid == 0)
-	{
-		printf("In the child proc - %s", ptr);
-		execve(ptr, argv, NULL);
-	}
-	else
-	{
-		wait(&pid);
-	}
 
 	if (is_pipe)
 		return (0);
-	else
-		return (main());
+
+	return (0);
 }
