@@ -13,7 +13,11 @@ int _puts(char *str);
 char *_uitoa(unsigned int count);
 int match_char(char c, const char *str);
 char *_strtok(char *str, const char *delim);
-char *tokenize(char *str, const char *delim);
+char **_tokenize(char *str, const char *delim);
+
+/* memory */
+char *_realloc1(char *ptr, int size);
+char **_realloc2(char **ptr, size_t *size);
 
 
 #endif /* _SHEL_H_ */

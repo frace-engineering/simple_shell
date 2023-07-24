@@ -10,9 +10,15 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 {
 	size_t len;
 	char *buff, *ptr;
+	char **tokens;
 	int is_pipe;
 	pid_t pid;
 	int wstatus;
+	char **envp = argv;
+
+	tokens = NULL;
+	(void)envp;
+	(void)ptr;
 	/** char *argv[] = {"", NULL}; */
 
 	len = 1024;
@@ -27,12 +33,14 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 
 	while (getline(&buff, &len, stdin) != -1)
 	{
-		ptr = strtok(buff, "\n ");
+		/*ptr = strtok(buff, "\n "); */
+
+		tokens = _tokenize(buff, " \n\t\r");
 
 		pid = fork();
 		if(pid == 0)
 		{
-			if (execve(ptr, argv, env) == -1)
+			if (execve(tokens[0], tokens, env) == -1)
 			{
 				if (is_pipe)
 					exit (127);
@@ -57,5 +65,7 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 	if (is_pipe)
 		return (0);
 
+	free(buff);
+	free(tokens);
 	return (0);
 }

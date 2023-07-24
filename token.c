@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 /**
  * match_char - matches a chracter to characters in a string
  * @c: given character
@@ -71,12 +70,40 @@ char *_strtok(char *str, const char *delim)
  *
  * Return: token
  */
-char *tokenize(char *str, const char *delim)
+char **_tokenize(char *str, const char *delim)
 {
-	char *token;
+	char **tokens;
+	size_t num;
+	size_t i;
 
-	token = _strtok(str, delim);
-	while (token != NULL)
-		token = _strtok(NULL, delim);
-	return (token);
+	i = 1;
+	num = 10;
+
+	if (str == NULL)
+		return (NULL);
+
+	tokens = malloc(sizeof(char *) * num);
+	if (tokens == NULL)
+	{
+		perror("malloc");
+		return (NULL);
+	}
+
+	tokens[0] = strtok(str, delim);
+
+	while ((tokens[i] = strtok(NULL, delim)) != NULL)
+	{
+		i++;
+		if (i == num)
+		{
+			tokens = _realloc2(tokens, &num);
+			if (tokens == NULL)
+			{
+				perror("realloc");
+				return (NULL);
+			}
+		}
+	}
+
+	return (tokens);
 }
