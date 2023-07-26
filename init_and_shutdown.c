@@ -38,8 +38,7 @@ int init(char **argv, char **env, struct core *core)
  */
 int init_env(char **sys_env, struct core *core)
 {
-	int i;
-	int j;
+	int i, j, k, n;
 
 	for (i = 0; sys_env[i] != NULL; i++)
 		;
@@ -49,7 +48,15 @@ int init_env(char **sys_env, struct core *core)
 		return (0);
 
 	for (j = 0; j < i; j++)
-		core->env[j] = sys_env[j];
+	{
+		for (k = 0; sys_env[j][k] != '\0'; k++)
+			;
+		core->env[j] = malloc(sizeof(char) * (k + 1));
+
+		for (n = 0; n < k; n++)
+			core->env[j][n] = sys_env[j][n];
+		core->env[j][n] = '\0';
+	}
 
 	core->env[j] = NULL;
 
@@ -67,8 +74,8 @@ int init_env(char **sys_env, struct core *core)
 int shutdown(struct core *core)
 {
 	free(core->line);
-	/*free_2d(core->av);*/
 	free_2d(core->env);
+	free_2d(core->av);
 
 	return (1);
 }
