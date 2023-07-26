@@ -3,69 +3,49 @@
 
 /**
  * main - entry point to the function
+ * @argc: argument count
+ * @argv: argument vector
+ * @env: environment variable
  *
+ * Description: main function
  * Return: self
  */
 int main(int argc __attribute__((unused)), char **argv, char **env)
 {
-	size_t len;
-	char *buff, *ptr;
-	char **tokens;
-	int is_pipe;
-	pid_t pid;
-	int wstatus;
-	char **envp = argv;
+	struct core core;
+	int (*f)(struct core *core);
 
-	tokens = NULL;
-	(void)envp;
-	(void)ptr;
-	/** char *argv[] = {"", NULL}; */
+	init(argv, env, &core);
 
-	len = 1024;
-	buff = malloc(sizeof(char *) * 1024);
-	if (buff == NULL)
-		return (0);
+	/*core.is_pipe = isatty(STDIN_FILENO) ? 0 : 1; */
 
-	is_pipe = isatty(STDIN_FILENO) ? 0 : 1;
-
-	if(!is_pipe)
+	if (!core.is_pipe)
 		_puts("$ ");
 
-	while (getline(&buff, &len, stdin) != -1)
+	while (getline(&core.line, &core.line_len, stdin) != -1)
 	{
-		/*ptr = strtok(buff, "\n "); */
-
-		tokens = _tokenize(buff, " \n\t\r");
-
-		pid = fork();
-		if(pid == 0)
+		if (core.line[0] == '\n' && !core.is_pipe)
 		{
-			if (execve(tokens[0], tokens, env) == -1)
-			{
-				if (is_pipe)
-					exit (127);
-				else
-				{
-					perror("execve");
-				}
-			}
+			_puts("$ ");
+			continue;
 		}
-		else
+		else if (core.line[0] == '\n' && core.is_pipe)
 		{
-			wait(&wstatus);
+			break;
 		}
-		if (is_pipe == 0)
+			
+		core.av = _tokenize(core.line, " \n\t\r");
+
+		f = find_exec(core.av[0]);
+
+		f(&core);
+
+		shutdown(&core);
+		if (core.is_pipe == 0)
 			_puts("$ ");
 	}
-			
 
-	/** ptr = _strtok(buff, "\n" " "); */
+	shutdown(&core);
 
-
-	if (is_pipe)
-		return (0);
-
-	free(buff);
-	free(tokens);
 	return (0);
 }

@@ -2,6 +2,14 @@
 
 #define NUM 10
 
+/**
+ * min - returns min of two ints
+ * @a: first int
+ * @b: second int
+ *
+ * Description: returns mins of @a and @b
+ * Return: either @a or @b
+ */
 int min(int a, int b)
 {
 	return (a > b ? a : b);
@@ -10,6 +18,7 @@ int min(int a, int b)
 /**
  * _realloc1 - reallocates char *
  * @ptr: pointer to string
+ * @size: size of @ptr
  *
  * Description: reallocates a string buffer
  * Return: new memory reallocated
@@ -39,7 +48,7 @@ char *_realloc1(char *ptr, int size)
 	{
 		return (NULL);
 	}
-	
+
 	new_size = min(size, _len(ptr));
 
 	for (i = 0; i < new_size && ptr[i] != '\0'; i++)
@@ -53,6 +62,14 @@ char *_realloc1(char *ptr, int size)
 	return (new);
 }
 
+/**
+ * _realloc2 - reallocates memory for a char ** block
+ * @ptr: pointer to memory
+ * @size: new size
+ *
+ * Description: reallocates memory for char **
+ * Return: the reallocated memory
+ */
 char **_realloc2(char **ptr, size_t *size)
 {
 	char **new;
@@ -70,4 +87,24 @@ char **_realloc2(char **ptr, size_t *size)
 	*size += 10;
 	free(ptr);
 	return (new);
+}
+
+/**
+ * _reset - resets all bytes of a buffer to 0
+ * @buf: pointer to memory
+ *
+ * Description: resets all bytes of a buffer to null byte
+ * Return: void
+ */
+void _reset(char buf[])
+{
+	int i;
+
+	i = 0;
+
+	while (buf[i] != '\0')
+	{
+		buf[i] = '\0';
+		i++;
+	}
 }

@@ -12,7 +12,7 @@ int match_char(char c, const char *str)
 	while (*str != '\0')
 	{
 		if (c == *str)
-			return(1);
+			return (1);
 		str++;
 	}
 	return (0);
@@ -22,6 +22,7 @@ int match_char(char c, const char *str)
  * @str: pointer to a string
  * @delim: pointer to character string of delimiters
  *
+ * Description: gets next token for str
  * Return: tokens
  */
 char *_strtok(char *str, const char *delim)
@@ -64,10 +65,11 @@ char *_strtok(char *str, const char *delim)
 }
 
 /**
- * tokenize - tokenise a string
+ * _tokenize - tokenise a string
  * @str: pointer to a string
  * @delim: pointer to string of delimiters
  *
+ * Description: tokenizes a string
  * Return: token
  */
 char **_tokenize(char *str, const char *delim)

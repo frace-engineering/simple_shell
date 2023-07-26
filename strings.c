@@ -8,6 +8,9 @@
  */
 int _len(char *str)
 {
+	if (str == NULL)
+		return (0);
+
 	if (*str != '\0')
 		return (1 + _len(str + 1));
 	return (0);
@@ -64,4 +67,30 @@ char *_uitoa(unsigned int count)
 		count /= 10;
 	}
 	return (numstr);
+}
+
+/**
+ * _strcat - concatenates 2 strings
+ * @s1: destination string
+ * @s2: source string
+ *
+ * Description: concatenates strings 1 and 2 together
+ * Return: pointer to the concatenated string
+ */
+char *_strcat(char *s1, char *s2)
+{
+	int i, j;
+
+	if (s2 == NULL)
+		return (s1);
+
+	for (i = 0; s1[i] != '\0'; i++)
+		;
+
+	for (j = 0; s2[j] != '\0'; j++)
+		s1[i + j] = s2[j];
+
+	s1[i + j] = '\0';
+
+	return (s1);
 }
