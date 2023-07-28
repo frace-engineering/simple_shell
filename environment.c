@@ -26,31 +26,27 @@ char *_getenv(char *name, char **env)
 			else
 				break;
 		}
-
 		if (j == len)
 		{
 			is_found = 1;
 			break;
 		}
 	}
-
 	if (is_found)
 	{
 		j = 0;
 		while (env[i][j] != '=')
 			j++;
 		j++;
-
 		for (k = 0; env[i][j + k] != '\0'; k++)
 			k++;
 		var = malloc(sizeof(char) * (k + 1));
-
+		if (var == NULL)
+			return (NULL);
 		for (k = 0; env[i][j + k] != '\0'; k++)
 			var[k] = env[i][j + k];
 		var[k] = '\0';
-
 		return (var);
-	}	
-
+	}
 	return (NULL);
 }

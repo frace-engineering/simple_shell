@@ -49,13 +49,18 @@ typedef struct exec_funcs
 	int (*f)(struct core *core);
 } exec_funcs;
 
-int _len(char *str);
+/* write functions */
 int _putchar(char c);
-int _puts(char *str);
+int _puts(char *c);
+void print_error(struct core *core, char *msg);
+
+/* string functions */
+int _len(char *str);
 char *_uitoa(unsigned int count);
 int match_char(char c, const char *str);
 char *_strtok(char *str, const char *delim);
 char *_strcat(char *s1, char *s2);
+char *_strdup(char *s);
 char **_tokenize(char *str, const char *delim);
 
 /* memory */

@@ -91,7 +91,9 @@ char **_tokenize(char *str, const char *delim)
 		return (NULL);
 	}
 
-	tokens[0] = strtok(str, delim);
+	/*tokens[0] = strtok(str, delim);*/
+
+	tokens[0] = _strdup(strtok(str, delim));
 
 	while ((tokens[i] = strtok(NULL, delim)) != NULL)
 	{

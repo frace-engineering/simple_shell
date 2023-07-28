@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 /**
  * main - entry point to the function
  * @argc: argument count
@@ -17,7 +16,7 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 
 	init(argv, env, &core);
 
-	/*core.is_pipe = isatty(STDIN_FILENO) ? 0 : 1; */
+	/*signal(SIGINT, signalHandler); */
 
 	if (!core.is_pipe)
 		_puts("$ ");
@@ -33,19 +32,22 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 		{
 			break;
 		}
-			
-		core.av = _tokenize(core.line, " \n\t\r");
 
+		core.av = _tokenize(core.line, " \n\t\r");
 		f = find_exec(core.av[0]);
 
-		f(&core);
+		if (f != NULL)
+			f(&core);
+		else
+		{
+			print_error(&core, "An error occured");
+		}
 
-		shutdown(&core);
 		if (core.is_pipe == 0)
 			_puts("$ ");
 	}
 
-	shutdown(&core);
+	/*shutdown(&core);*/
 
 	return (0);
 }

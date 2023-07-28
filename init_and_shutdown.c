@@ -68,14 +68,16 @@ int init_env(char **sys_env, struct core *core)
  * @core: the core shell variable
  *
  * Description: frees te core variable
- *
- * return: 1 on success, 0 otherwise
+ * Return: 1 on success, 0 otherwise
  */
 int shutdown(struct core *core)
 {
-	free(core->line);
+	if (core->line != NULL)
+		free(core->line);
+
 	free_2d(core->env);
 	free_2d(core->av);
+	/*free_2d(core->command); */
 
 	return (1);
 }
@@ -91,9 +93,12 @@ void free_2d(char **ptr)
 {
 	int i;
 
+	if (ptr == NULL)
+		return;
+
 	for (i = 0; ptr[i] != NULL; i++)
 		free(ptr[i]);
 
 	free(ptr);
-} 
+}
 

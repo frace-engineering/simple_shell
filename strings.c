@@ -16,31 +16,6 @@ int _len(char *str)
 	return (0);
 }
 /**
- * _putchar - prints character to the stdout
- * @c: input character
- *
- * Return: number of character
- */
-int _putchar(char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-/**
- * _puts - prints string to the stdout
- * @str: pointer to a string
- *
- * Return: void
- */
-int _puts(char *str)
-{
-	ssize_t count, len;
-
-	count = _len(str);
-	len = write(STDOUT_FILENO, str, count + 1);
-	return (len);
-}
-/**
  * _uitoa - converts number to a string
  * @count: given number
  *
@@ -93,4 +68,34 @@ char *_strcat(char *s1, char *s2)
 	s1[i + j] = '\0';
 
 	return (s1);
+}
+
+/**
+ * _strdup - duplicates a string
+ * @s: the string to duplicate
+ *
+ * Description: duplicates a string
+ * Return: pointer to the string
+ */
+char *_strdup(char *s)
+{
+	int i;
+	char *p;
+
+	if (s == NULL)
+		return (NULL);
+
+	for (i = 0; s[i] != '\0'; i++)
+		;
+
+	p = malloc(sizeof(char) * (i + 1));
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		p[i] = s[i];
+	}
+
+	p[i] = '\0';
+
+	return (p);
 }

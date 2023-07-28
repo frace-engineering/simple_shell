@@ -82,9 +82,11 @@ char **_realloc2(char **ptr, size_t *size)
 		return (NULL);
 	}
 	for (i = 0; i < (*size); i++)
-		new[i] = ptr[i];
+		new[i] = _strdup(ptr[i]);
 
 	*size += 10;
+
+	free_2d(ptr);
 	free(ptr);
 	return (new);
 }

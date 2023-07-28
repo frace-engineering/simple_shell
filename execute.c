@@ -17,24 +17,11 @@ int run_path(char *full_path, struct core *core);
  */
 int (*find_exec(char *name))(struct core *core)
 {
-	int i;
-
-	exec_funcs funcs[] = {
-		{'/', exec_full_path},
-		{'.', exec_cwd},
-		{'\0', NULL}
-	};
-
 	if (name[0] >= 'a' && name[0] <= 'z')
 		return (exec_path);
 
-	return (exec_full_path);
-
-	for (i = 0; funcs[i].c != '\0'; i++)
-	{
-		if (name[0] == funcs[i].c)
-			return (funcs[i].f);
-	}
+	if (name[0] == '/')
+		return (exec_full_path);
 
 	return (NULL);
 }
@@ -49,7 +36,6 @@ int (*find_exec(char *name))(struct core *core)
 int exec_full_path(struct core *core)
 {
 	pid_t pid;
-	int wstatus;
 
 	pid = fork();
 
@@ -65,7 +51,7 @@ int exec_full_path(struct core *core)
 	}
 	else
 	{
-		wait(&wstatus);
+		wait(&core->wstatus);
 	}
 
 	return (1);
@@ -108,9 +94,9 @@ int exec_path(struct core *core)
 		_reset(full_path);
 	}
 
-	perror("Command not found\n");
+	print_error(core, "Command not found");
 
-	return (1);
+	return (0);
 }
 
 /**
@@ -153,7 +139,6 @@ int run_path(char *full_path, struct core *core)
 			if (execve(full_path, core->av, core->env) == -1)
 			{
 				perror("execve");
-				printf("from here");
 				exit(1);
 			}
 		}
