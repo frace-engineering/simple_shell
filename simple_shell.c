@@ -47,7 +47,7 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 			_puts("$ ");
 	}
 
-	/*shutdown(&core);*/
+	shutdown(&core);
 
 	return (0);
 }
